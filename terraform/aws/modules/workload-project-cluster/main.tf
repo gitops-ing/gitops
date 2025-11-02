@@ -342,8 +342,16 @@ resource "aws_iam_policy" "aws_ebs_csi_driver" {
 EOT
 }
 
+data "aws_iam_openid_connect_provider" "existing_project_region" {
+  provider = aws.kubefirst_mgmt_s3_bucket_region
+  url      = module.eks.cluster_oidc_issuer_url
+  
+  count = 1
+}
+
 resource "aws_iam_openid_connect_provider" "eks" {
   provider = aws.kubefirst_mgmt_s3_bucket_region
+  count = length(data.aws_iam_openid_connect_provider.existing_project_region) == 0 ? 1 : 0
   url             = module.eks.cluster_oidc_issuer_url
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
