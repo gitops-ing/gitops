@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sso-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
+spec:
+  project: default
+  source:
+    repoURL: europe-west2-docker.pkg.dev/civo-com/charts
+    chart: sso-operator
+    targetRevision: 0.1.0-rc.67ef1845
+    helm:
+      values: |-
+        imagePullSecrets:
+          - name: docker-config
+      parameters: []
+  destination:
+    name: in-cluster
+    namespace: konstruct-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
