@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: development-workloadcluster-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
+spec:
+  project: default
+  source:
+    repoURL: europe-west2-docker.pkg.dev/civo-com/charts
+    chart: workloadcluster-operator
+    targetRevision: 0.1.0-rc.e2941335
+    helm:
+      values: |-
+        imagePullSecrets:
+          - name: docker-config
+        serviceAccount:
+          create: true
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::126827061464:role/konstruct-mgmt-k1-gitops-ing
+      parameters: []
+  destination:
+    name: in-cluster
+    namespace: konstruct-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

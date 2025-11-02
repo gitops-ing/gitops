@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: development-konstruct-ui
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: europe-west2-docker.pkg.dev/civo-com/charts
+    chart: konstruct-ui
+    targetRevision: 0.1.0-rc.51a98177
+    helm:
+      values: |-
+        imagePullSecrets:
+          - name: docker-config
+        ingress:
+          className: nginx
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            nginx.ingress.kubernetes.io/service-upstream: "true"
+            nginx.ingress.kubernetes.io/use-regex: "true"
+          hosts:
+            - host: konstruct.gitops.ing
+              paths:
+                - path: /api/v1/(.*)
+                  pathType: ImplementationSpecific
+                  service: backend
+                - path: /
+                  pathType: Prefix
+                  service: frontend
+          tls:
+            - secretName: konstruct-tls
+              hosts:
+                - konstruct.gitops.ing
+        konstruct-ui:
+          host: https://konstruct.gitops.ing/api
+        clusterSecretStoreName: vault-kv-secret
+        vaultSecretPath: konstruct/konstruct-ui
+        configs:
+          configOne: development-config-one
+          configTwo: development-config-two
+  destination:
+    name: in-cluster
+    namespace: konstruct-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

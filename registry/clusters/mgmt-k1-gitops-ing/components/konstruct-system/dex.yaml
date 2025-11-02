@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: development-dex
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '-1'
+spec:
+  project: default
+  source:
+    repoURL: https://charts.dexidp.io
+    targetRevision: 0.24.0
+    helm:
+      parameters:
+        - name: ingress.enabled
+          value: 'true'
+        - name: ingress.hosts[0].host
+          value: dex.gitops.ing
+      values: |-
+        ingress:
+          enabled: true
+          className: nginx 
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          hosts:
+            - host: dex.gitops.ing 
+              paths: 
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: dex-tls
+              hosts:
+                - dex.gitops.ing
+        configSecret:
+          name: "dex-config"
+    chart: dex
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dex
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

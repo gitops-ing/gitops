@@ -1,0 +1,72 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: konstruct-api
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: europe-west2-docker.pkg.dev/civo-com/charts
+    chart: konstruct-api
+    targetRevision: 0.1.0-rc.c8b2cddb
+    helm:
+      values: |-
+        imagePullSecrets:
+          - name: docker-config
+        serviceAccount:
+          create: true
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::126827061464:role/konstruct-mgmt-kgetpods-biz
+        ingress:
+          className: nginx
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+            nginx.ingress.kubernetes.io/service-upstream: "true"
+          hosts:
+            - host: konstruct-api.gitops.ing
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: konstruct-api-tls
+              hosts:
+                - konstruct-api.gitops.ing
+        extraEnvSecrets:
+          OIDC_ISSUER_URL:
+              name: konstruct-api-secrets
+              key: OIDC_ISSUER_URL
+          OIDC_CLIENT_ID:
+              name: konstruct-api-secrets
+              key: OIDC_CLIENT_ID
+          OIDC_CLIENT_SECRET:
+              name: konstruct-api-secrets
+              key: OIDC_CLIENT_SECRET
+          OIDC_REDIRECT_URL:
+              name: konstruct-api-secrets
+              key: OIDC_REDIRECT_URL
+          FRONTEND_URL:
+              name: konstruct-api-secrets
+              key: FRONTEND_URL
+          DOMAIN:
+              name: konstruct-api-secrets
+              key: DOMAIN
+          GITHUB:
+              name: konstruct-api-secrets
+              key: GITHUB
+        vaultMountPoint: "secret"
+        vaultSecretPath: "konstruct/konstruct-api"
+        clusterSecretStoreName: "vault-kv-secret"
+  destination:
+    name: in-cluster
+    namespace: konstruct-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
