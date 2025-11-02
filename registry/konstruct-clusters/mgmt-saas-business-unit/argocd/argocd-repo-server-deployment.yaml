@@ -10,5 +10,5 @@ spec:
       - name: argocd-repo-server
         resources:
           requests:
-            memory: 6Gi
-            cpu: 2
+            memory: 2Gi
+            cpu: 1
