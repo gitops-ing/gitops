@@ -17,5 +17,5 @@ spec:
   data:
   - secretKey: dockerconfig
     remoteRef:
-      key: google-cloud/docker-config
+      key: konstruct/docker-config
       property: docker-config
