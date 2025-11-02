@@ -1,0 +1,27 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: mgmt-saas-business-unit-infrastructure
+spec:
+  providerConfigRef: 
+    name: mgmt-saas-business-unit
+  forProvider:
+    source: Remote
+    module: git::https://github.com/gitops-ing/gitops.git//terraform/aws/modules/workload-project-cluster?ref=main
+    enableTerraformCLILogging: true
+    vars:
+    - key: cluster_name
+      value: "mgmt-saas-business-unit"
+    - key: cluster_region
+      value: "us-east-1"
+    - key: node_count
+      value: "3"
+    - key: node_type
+      value: "m5.xlarge"
+    - key: ami_type
+      value: "AL2_x86_64"
+    - key: s3_bucket_name
+      value: "saas-business-unit-terraform-state"
+    - key: account_id
+      value: "126827061464"
+

@@ -1,0 +1,13 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: mgmt-saas-business-unit-infrastructure-bootstrap
+spec:
+  providerConfigRef: 
+    name: mgmt-saas-business-unit
+  forProvider:
+    source: Remote
+    module: git::https://github.com/gitops-ing/gitops.git//terraform/aws/modules/project-bootstrap?ref=main
+    vars:
+    - key: cluster_name
+      value: "mgmt-saas-business-unit"
