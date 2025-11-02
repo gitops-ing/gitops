@@ -6,7 +6,7 @@ data:
   url: 'https://argocd-mgmt-saas-business-unit.gitops.ing'
   oidc.config: |
     name: Dex
-    issuer: <DEX_DOMAIN_NAME>
+    issuer: https://dex.gitops.ing
     clientID: argocd
     clientSecret: app-secret
     requestedScopes:
