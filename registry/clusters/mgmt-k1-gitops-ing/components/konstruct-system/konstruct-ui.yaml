@@ -39,6 +39,11 @@ spec:
                 - konstruct.gitops.ing
         konstruct-ui:
           host: https://konstruct.gitops.ing/api
+        backendService:
+          enabled: true
+          name: "konstruct-api"
+          namespace: "konstruct-system"
+          port: 8080
         clusterSecretStoreName: vault-kv-secret
         vaultSecretPath: konstruct/konstruct-ui
         configs:
