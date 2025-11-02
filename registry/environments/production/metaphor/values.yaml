@@ -1,0 +1,36 @@
+metaphor:
+  annotations: |
+    linkerd.io/inject: "enabled"
+  labels: |
+    mirror.linkerd.io/exported: "true"
+  image:
+    repository: 126827061464.dkr.ecr.us-east-2.amazonaws.com/metaphor
+  imagePullSecrets:
+    - name: docker-config
+  ingress:
+    className: nginx
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      
+      
+      
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+    hosts:
+      - host: metaphor-production.gitops.ing
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: metaphor-tls
+        hosts:
+          - metaphor-production.gitops.ing
+  metaphor:
+    host: https://metaphor-production.gitops.ing/api
+    console: https://kubefirst.gitops.ing
+
+  clusterSecretStoreName: vault-kv-secret
+  vaultSecretPath: production/metaphor
+  configs:
+    configOne: production-config-one
+    configTwo: production-config-two
