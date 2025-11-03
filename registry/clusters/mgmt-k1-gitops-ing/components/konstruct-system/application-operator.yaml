@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: europe-west2-docker.pkg.dev/civo-com/charts
     chart: application-operator
-    targetRevision: 0.1.0-rc.95efd83f
+    targetRevision: 0.1.0-rc.1430a94e
     helm:
       values: |-
         imagePullSecrets:
