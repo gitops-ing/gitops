@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: argocd-application-controller
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: argocd-application-controller
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: argocd-repo-server
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 1
