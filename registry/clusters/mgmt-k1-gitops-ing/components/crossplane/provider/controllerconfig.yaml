@@ -60,13 +60,6 @@ spec:
             - mountPath: /logs
               name: shared-logs
               readOnly: true 
-            resources:
-              requests:
-                cpu: 100m
-                memory: 128Mi
-              limits:
-                cpu: 500m
-                memory: 256Mi
             livenessProbe:
               httpGet:
                 path: /health
