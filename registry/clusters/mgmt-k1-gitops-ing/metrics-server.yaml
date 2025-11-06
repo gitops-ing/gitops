@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mgmt-k1-gitops-ing-metrics-server-components
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '100'
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/gitops-ing/gitops.git
+    path: registry/clusters/mgmt-k1-gitops-ing/components/metrics-server
+    targetRevision: HEAD
+  destination:
+    name: in-cluster
+    namespace: metrics-server
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
