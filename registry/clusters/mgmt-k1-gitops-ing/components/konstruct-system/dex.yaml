@@ -21,6 +21,7 @@ spec:
       values: |-
         image:
           repository: europe-west2-docker.pkg.dev/civo-com/images/dex
+          tag: 0.1.0
         imagePullSecrets:
           - name: docker-config-for-dex
         ingress:
