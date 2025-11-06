@@ -1,0 +1,13 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: mgmt-jd-org1-bootstrap
+spec:
+  providerConfigRef: 
+    name: mgmt-jd-org1
+  forProvider:
+    source: Remote
+    module: git::https://github.com/gitops-ing/gitops.git//terraform/aws/modules/project-bootstrap?ref=main
+    vars:
+    - key: cluster_name
+      value: "mgmt-jd-org1"
