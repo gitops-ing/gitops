@@ -43,6 +43,13 @@ spec:
               name: helmcache
             - mountPath: /logs
               name: shared-logs
+            resources:
+              requests:
+                cpu: "500m"
+                memory: "2Gi"
+              limits:
+                cpu: "1"
+                memory: "5Gi"
           
           # Log streaming sidecar container
           - name: log-streamer
@@ -59,7 +66,14 @@ spec:
             volumeMounts:
             - mountPath: /logs
               name: shared-logs
-              readOnly: true 
+              readOnly: true
+            resources:
+              requests:
+                cpu: "50m"
+                memory: "512Mi"
+              limits:
+                cpu: "200m"
+                memory: "2Gi"
             livenessProbe:
               httpGet:
                 path: /health
