@@ -19,6 +19,10 @@ spec:
         - name: ingress.hosts[0].host
           value: dex.gitops.ing
       values: |-
+        image:
+          repository: europe-west2-docker.pkg.dev/civo-com/images/dex
+        imagePullSecrets:
+          - name: docker-config-for-dex
         ingress:
           enabled: true
           className: nginx 
