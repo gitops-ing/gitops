@@ -42,7 +42,7 @@ spec:
     chart: dex
   destination:
     server: https://kubernetes.default.svc
-    namespace: dex
+    namespace: konstruct-system
   syncPolicy:
     automated:
       prune: true
