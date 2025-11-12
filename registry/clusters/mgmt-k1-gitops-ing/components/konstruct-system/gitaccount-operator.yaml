@@ -12,9 +12,10 @@ spec:
   source:
     repoURL: europe-west2-docker.pkg.dev/civo-com/charts
     chart: gitaccount-operator
-    targetRevision: 0.1.0-rc.7b8ca3ff
+    targetRevision: 0.1.0-rc.6bbb284e
     helm:
       values: |-
+        replicaCount: 0
         imagePullSecrets:
           - name: docker-config
       parameters: []
