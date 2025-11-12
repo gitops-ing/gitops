@@ -15,7 +15,7 @@ spec:
     targetRevision: 0.1.0-rc.c5fe7472
     helm:
       values: |-
-        replicaCount: 0
+        replicaCount: 1
         image: 
           repository: europe-west2-docker.pkg.dev/civo-com/images/team-management-operator
         imagePullSecrets:

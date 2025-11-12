@@ -15,7 +15,7 @@ spec:
     targetRevision: 0.1.0-rc.b80f6c10
     helm:
       values: |-
-        replicaCount: 0
+        replicaCount: 1
         imagePullSecrets:
           - name: docker-config
         serviceAccount:
