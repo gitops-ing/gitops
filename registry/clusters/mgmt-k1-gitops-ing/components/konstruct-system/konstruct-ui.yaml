@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: europe-west2-docker.pkg.dev/civo-com/charts
     chart: konstruct-ui
-    targetRevision: 0.1.0-rc.633f88c8
+    targetRevision: 0.1.0-rc.60e4c7a7
     helm:
       values: |-
         imagePullSecrets:
