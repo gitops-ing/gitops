@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: 'https://argocd-mgmt-engineering.gitops.ing'
+  oidc.config: |
+    name: Dex
+    issuer: https://dex.gitops.ing
+    clientID: argocd
+    clientSecret: app-secret
+    requestedScopes:
+    - openid
+    - profile
+    - email
+    - groups

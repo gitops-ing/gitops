@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mgmt-engineering-cert-manager
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '30'
+spec:
+  project: mgmt-engineering
+  source:
+    repoURL: https://charts.jetstack.io
+    targetRevision: v1.14.4
+    helm:
+      values: |-
+        serviceAccount:
+          create: true
+          name: cert-manager
+          annotations:
+            eks.amazonaws.com/role-arn: 'arn:aws:iam::126827061464:role/cert-manager-mgmt-engineering'
+        installCRDs: true
+    chart: cert-manager
+  destination:
+    name: mgmt-engineering
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,27 @@
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: mgmt-engineering-infrastructure
+spec:
+  providerConfigRef: 
+    name: mgmt-engineering
+  forProvider:
+    source: Remote
+    module: git::https://github.com/gitops-ing/gitops.git//terraform/aws/modules/workload-project-cluster?ref=main
+    enableTerraformCLILogging: true
+    vars:
+    - key: cluster_name
+      value: "mgmt-engineering"
+    - key: cluster_region
+      value: "us-east-1"
+    - key: node_count
+      value: "2"
+    - key: node_type
+      value: "m5.2xlarge"
+    - key: ami_type
+      value: "AL2_x86_64"
+    - key: s3_bucket_name
+      value: "engineering-terraform-state"
+    - key: account_id
+      value: "126827061464"
+

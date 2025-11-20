@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mgmt-engineering-infrastructure
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '10'
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/gitops-ing/gitops.git
+    path: registry/konstruct-clusters/mgmt-engineering/infrastructure
+    targetRevision: HEAD
+  destination:
+    name: in-cluster
+    namespace: mgmt-engineering
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 30
+      backoff:
+        duration: 1m
+        factor: 1
+
