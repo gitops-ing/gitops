@@ -17,7 +17,7 @@ spec:
     - key: node_count
       value: "2"
     - key: node_type
-      value: "m5.2xlarge"
+      value: "m5.4xlarge"
     - key: ami_type
       value: "AL2_x86_64"
     - key: s3_bucket_name
