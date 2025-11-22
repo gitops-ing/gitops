@@ -53,7 +53,7 @@ spec:
           
           # Log streaming sidecar container
           - name: log-streamer
-            image: ghcr.io/konstructio/logs-streamer:v0.0.9
+            image: ghcr.io/konstructio/logs-streamer:v0.0.10
             ports:
             - containerPort: 9090
               name: http
